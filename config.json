@@ -2,8 +2,7 @@
     "rss_feeds": [
         "http://lenta.ru/rss/top7",
         "https://www.vesti.ru/vesti.rss",
-        "https://www.vesti.ru/vesti.rss",
-        "https://www.rt.com/rss/"
+        "https://www.vesti.ru/vesti.rss"
         
     ],
     "database": {
