@@ -1,13 +1,16 @@
 {
     "rss_feeds": [
-        "https://example.com/rss",
-        "https://another-example.com/rss"
+        "http://lenta.ru/rss/top7",
+        "https://www.vesti.ru/vesti.rss",
+        "https://www.vesti.ru/vesti.rss",
+        "https://www.rt.com/rss/"
+        
     ],
     "database": {
-        "host": "localhost",
-        "port": 5432,
-        "dbname": "news_db",
-        "user": "your_username",
-        "password": "your_password"
+        "host": "centerbeam.proxy.rlwy.net",
+        "port": 25664,
+        "dbname": "railway",
+        "user": "postgres",
+        "password": "vIaIOkXRDMfPjWjDfFxqRsZoqzQezXtO"
     }
 }
