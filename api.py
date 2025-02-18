@@ -58,6 +58,7 @@ def get_news_by_category(category: str):
         cursor.execute(
             "SELECT id, title, description, link, image_url, published_at, category FROM news WHERE category = %s",
             (category,)
+        )
         news = cursor.fetchall()
         return [
             {
