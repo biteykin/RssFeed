@@ -8,42 +8,34 @@
             "url": "https://www.vesti.ru/vesti.rss",
             "category": "Новости"
         },
-        
         {
             "url": "https://www.gastronom.ru/RSS",
             "category": "Еда"
         },
-
         {
-            "https://www.povarenok.ru/rss/",
+            "url": "https://www.povarenok.ru/rss/",
             "category": "Еда"
         },
-
-         {
+        {
             "url": "https://motor.ru/exports/rss",
             "category": "Авто"
         },
-
         {
             "url": "https://maccentral.macworld.com/mnn.cgi",
             "category": "Технологии"
         },
-
         {
             "url": "https://www.anekdot.ru/rss/export20.xml",
             "category": "Юмор"
         },
-
         {
             "url": "https://www.anekdot.ru/rss/export_j.xml",
             "category": "Юмор"
         },
-
         {
             "url": "https://www.anekdot.ru/rss/export_bestday.xml",
             "category": "Юмор"
         },
-        
         {
             "url": "https://arzamas.academy/feed_v1.rss",
             "category": "Культура"
