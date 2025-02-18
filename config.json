@@ -1,16 +1,53 @@
 {
     "rss_feeds": [
-        "http://lenta.ru/rss/top7",
-        "https://www.vesti.ru/vesti.rss",
-        "https://maccentral.macworld.com/mnn.cgi",
-        "https://www.gastronom.ru/RSS",
-        "https://www.povarenok.ru/rss/",
-        "https://motor.ru/exports/rss",
-        "https://arzamas.academy/feed_v1.rss",
-        "https://www.anekdot.ru/rss/export20.xml",
-        "https://www.anekdot.ru/rss/export_j.xml",
-        "https://www.anekdot.ru/rss/export_bestday.xml"
+        {
+            "url": "https://lenta.ru/rss/news",
+            "category": "Новости"
+        },
+        {
+            "url": "https://www.vesti.ru/vesti.rss",
+            "category": "Новости"
+        },
         
+        {
+            "url": "https://www.gastronom.ru/RSS",
+            "category": "Еда"
+        },
+
+        {
+            "https://www.povarenok.ru/rss/",
+            "category": "Еда"
+        },
+
+         {
+            "url": "https://motor.ru/exports/rss",
+            "category": "Авто"
+        },
+
+        {
+            "url": "https://maccentral.macworld.com/mnn.cgi",
+            "category": "Технологии"
+        },
+
+        {
+            "url": "https://www.anekdot.ru/rss/export20.xml",
+            "category": "Юмор"
+        },
+
+        {
+            "url": "https://www.anekdot.ru/rss/export_j.xml",
+            "category": "Юмор"
+        },
+
+        {
+            "url": "https://www.anekdot.ru/rss/export_bestday.xml",
+            "category": "Юмор"
+        },
+        
+        {
+            "url": "https://arzamas.academy/feed_v1.rss",
+            "category": "Культура"
+        }
     ],
     "database": {
         "host": "centerbeam.proxy.rlwy.net",
