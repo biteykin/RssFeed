@@ -2,6 +2,7 @@ from fastapi import FastAPI, HTTPException
 import psycopg2
 from pydantic import BaseModel
 from typing import List, Optional
+from datetime import datetime
 
 # Модель для новости
 class NewsItem(BaseModel):
@@ -11,7 +12,7 @@ class NewsItem(BaseModel):
     link: str
     image_url: Optional[str] = None
     published_at: str
-    category: str
+    category: Optional[str] = None  # Разрешаем значение None
 
 # Инициализация FastAPI
 app = FastAPI()
@@ -45,7 +46,7 @@ def get_all_news():
                 "link": item[3],
                 "image_url": item[4],
                 "published_at": item[5].isoformat(),
-                "category": item[6]
+                "category": item[6] if item[6] else None  # Если category равно NULL, возвращаем None
             }
             for item in news
         ]
@@ -68,7 +69,7 @@ def get_news_by_category(category: str):
                 "link": item[3],
                 "image_url": item[4],
                 "published_at": item[5].isoformat(),
-                "category": item[6]
+                "category": item[6] if item[6] else None  # Если category равно NULL, возвращаем None
             }
             for item in news
         ]
@@ -92,7 +93,7 @@ def get_news_by_id(news_id: int):
             "link": news[3],
             "image_url": news[4],
             "published_at": news[5].isoformat(),
-            "category": news[6]
+            "category": news[6] if news[6] else None  # Если category равно NULL, возвращаем None
         }
 
 # Эндпоинт для поиска новостей по ключевому слову
@@ -113,7 +114,7 @@ def search_news(keyword: str):
                 "link": item[3],
                 "image_url": item[4],
                 "published_at": item[5].isoformat(),
-                "category": item[6]
+                "category": item[6] if item[6] else None  # Если category равно NULL, возвращаем None
             }
             for item in news
         ]
