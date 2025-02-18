@@ -4,6 +4,13 @@ from bs4 import BeautifulSoup
 import psycopg2
 from datetime import datetime
 import json
+from posthog import Posthog  # Импортируем PostHog
+
+# Инициализация PostHog
+posthog = Posthog(
+    api_key='phc_RU6xzmlLZZW1aqv3zobjBN7d9yZA3wdktSqqR0KrzIY',  # Замените на ваш API Key из PostHog
+    host='https://eu.i.posthog.com'  # Укажите хост PostHog
+)
 
 def load_config():
     """Загружает конфигурацию из файла config.json."""
@@ -94,12 +101,29 @@ def save_news_to_db(conn, news):
                     ON CONFLICT (link) DO NOTHING;
                 """, (item['title'], item['description'], item['link'], item['image'], item['published_at']))
                 print(f"Новость '{item['title']}' успешно сохранена в базу данных.")
+
+                # Отправка события в PostHog
+                posthog.capture(
+                    distinct_id='rss-collector',  # Уникальный идентификатор сервиса
+                    event='news_saved',  # Название события
+                    properties={
+                        'title': item['title'],
+                        'source': item['link']
+                    }
+                )
             except Exception as e:
                 print(f"Ошибка при сохранении новости {item['link']}: {e}")
-                print(f"Данные: {item}")  # Логируем данные, которые вызвали ошибку
-                conn.rollback()  # Откатываем транзакцию в случае ошибки
-                continue  # Продолжаем со следующей новостью
-        conn.commit()  # Фиксируем транзакцию
+
+                # Отправка события об ошибке в PostHog
+                posthog.capture(
+                    distinct_id='rss-collector',
+                    event='news_save_failed',
+                    properties={
+                        'error': str(e),
+                        'link': item['link']
+                    }
+                )
+        conn.commit()
 
 def main():
     """Основная функция."""
@@ -115,6 +139,16 @@ def main():
         print(f"Сбор новостей с {feed_url}...")
         news = get_rss_feed(feed_url)
         all_news.extend(news)
+
+        # Отправка события о сборе новостей в PostHog
+        posthog.capture(
+            distinct_id='rss-collector',
+            event='news_collected',
+            properties={
+                'source': feed_url,
+                'count': len(news)
+            }
+        )
 
     save_news_to_db(conn, all_news)
     print(f"Собрано и сохранено {len(all_news)} новостей.")
