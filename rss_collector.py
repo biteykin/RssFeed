@@ -8,7 +8,7 @@ from posthog import Posthog  # Импортируем PostHog
 
 # Инициализация PostHog
 posthog = Posthog(
-    api_key='phc_RU6xzmlLZZW1aqv3zobjBN7d9yZA3wdktSqqR0KrzIY',  # Замените на ваш API Key из PostHog
+    project_api_key='phc_RU6xzmlLZZW1aqv3zobjBN7d9yZA3wdktSqqR0KrzIY',  # Ваш API Key
     host='https://eu.i.posthog.com'  # Укажите хост PostHog
 )
 
@@ -89,17 +89,17 @@ def get_rss_feed(url):
 
     return news_items
 
-def save_news_to_db(conn, news):
+def save_news_to_db(conn, news, category):
     """Сохраняет новости в базу данных."""
     with conn.cursor() as cursor:
         for item in news:
             item = clean_data(item)  # Очищаем данные
             try:
                 cursor.execute("""
-                    INSERT INTO news (title, description, link, image_url, published_at)
-                    VALUES (%s, %s, %s, %s, %s)
+                    INSERT INTO news (title, description, link, image_url, published_at, category)
+                    VALUES (%s, %s, %s, %s, %s, %s)
                     ON CONFLICT (link) DO NOTHING;
-                """, (item['title'], item['description'], item['link'], item['image'], item['published_at']))
+                """, (item['title'], item['description'], item['link'], item['image'], item['published_at'], category))
                 print(f"Новость '{item['title']}' успешно сохранена в базу данных.")
 
                 # Отправка события в PostHog
@@ -108,7 +108,9 @@ def save_news_to_db(conn, news):
                     event='news_saved',  # Название события
                     properties={
                         'title': item['title'],
-                        'source': item['link']
+                        'source': item['link'],
+                        'category': category,
+                        "$process_person_profile": False  # Отключаем обработку профиля
                     }
                 )
             except Exception as e:
@@ -120,7 +122,8 @@ def save_news_to_db(conn, news):
                     event='news_save_failed',
                     properties={
                         'error': str(e),
-                        'link': item['link']
+                        'link': item['link'],
+                        "$process_person_profile": False  # Отключаем обработку профиля
                     }
                 )
         conn.commit()
@@ -135,8 +138,10 @@ def main():
         return
 
     all_news = []
-    for feed_url in config['rss_feeds']:
-        print(f"Сбор новостей с {feed_url}...")
+    for feed in config['rss_feeds']:
+        feed_url = feed['url']
+        category = feed['category']
+        print(f"Сбор новостей с {feed_url} (тематика: {category})...")
         news = get_rss_feed(feed_url)
         all_news.extend(news)
 
@@ -146,11 +151,15 @@ def main():
             event='news_collected',
             properties={
                 'source': feed_url,
-                'count': len(news)
+                'category': category,
+                'count': len(news),
+                "$process_person_profile": False  # Отключаем обработку профиля
             }
         )
 
-    save_news_to_db(conn, all_news)
+        # Сохраняем новости в базу данных
+        save_news_to_db(conn, news, category)
+
     print(f"Собрано и сохранено {len(all_news)} новостей.")
 
     conn.close()
