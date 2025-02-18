@@ -2,7 +2,14 @@
     "rss_feeds": [
         "http://lenta.ru/rss/top7",
         "https://www.vesti.ru/vesti.rss",
-        "https://maccentral.macworld.com/mnn.cgi"
+        "https://maccentral.macworld.com/mnn.cgi",
+        "https://www.gastronom.ru/RSS",
+        "https://www.povarenok.ru/rss/",
+        "https://motor.ru/exports/rss",
+        "https://arzamas.academy/feed_v1.rss",
+        "https://www.anekdot.ru/rss/export20.xml",
+        "https://www.anekdot.ru/rss/export_j.xml",
+        "https://www.anekdot.ru/rss/export_bestday.xml"
         
     ],
     "database": {
